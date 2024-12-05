@@ -1,0 +1,8 @@
+
+spring:
+  application:
+    name: Microservice-Usuario
+
+  config:
+    import: optional:configserver:http://localhost:8888
+

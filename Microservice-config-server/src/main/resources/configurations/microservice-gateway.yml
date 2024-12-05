@@ -1,0 +1,58 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: Microservice-Gateway
+
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enable: true
+
+      routes:
+        - id: campoFutbol
+          uri: http://localhost:8085
+          predicates:
+            - Path=/campo/**
+          filters:
+            - AuthenticationFilter
+
+
+        - id: client
+          uri: http://localhost:9090
+          predicates:
+            - Path=/public/**
+          filters:
+            - AuthenticationFilter
+
+        - id: reserva
+          uri: http://localhost:8082
+          predicates:
+            - Path=/reserva/**
+          filters:
+            - AuthenticationFilter
+
+        - id: usuario
+          uri: http://localhost:9095
+          predicates:
+            - Path=/usuario/**
+          filters:
+            - AuthenticationFilter
+
+        - id: file-imagen
+          uri: http://localhost:8087
+          predicates:
+            - Path=/file/**
+
+        - id: Microservice-Security-App
+          uri: http://localhost:8089
+          predicates:
+            - Path=/auth/**
+
+
+eureka:
+  client:
+    register-with-eureka: false

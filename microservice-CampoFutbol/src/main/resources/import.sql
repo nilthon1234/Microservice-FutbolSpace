@@ -1,0 +1,5 @@
+INSERT INTO campo_futbol (dni_use, address, description, city, province, district, estado) VALUES (12345678, '123 Calle Fútbol', 'Campo de fútbol grande', 'Ciudad A', 'Provincia A', 'Distrito A', 'HABILITADO');
+INSERT INTO campo_futbol (dni_use, address, description, city, province, district, estado) VALUES (87654321, '456 Avenida Balón', 'Campo de fútbol pequeño', 'Ciudad B', 'Provincia B', 'Distrito B', 'DESABILITADO');
+INSERT INTO campo_futbol (dni_use, address, description, city, province, district, estado) VALUES (12345678, '789 Calle Gol', 'Campo techado', 'Ciudad C', 'Provincia C', 'Distrito C', 'HABILITADO');
+INSERT INTO campo_futbol (dni_use, address, description, city, province, district, estado) VALUES (55667788, '321 Calle Penalty', 'Campo en buenas condiciones', 'Ciudad D', 'Provincia D', 'Distrito D', 'HABILITADO');
+INSERT INTO campo_futbol (dni_use, address, description, city, province, district, estado) VALUES (99887766, '654 Avenida Jugador', 'Campo de entrenamiento', 'Ciudad E', 'Provincia E', 'Distrito E', 'DESABILITADO');

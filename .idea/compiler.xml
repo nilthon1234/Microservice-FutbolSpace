@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="File-Imagen" />
+        <module name="microservice-CampoFutbol" />
+        <module name="Microservice-Usuario" />
+        <module name="Microservice-Security-App" />
+        <module name="Microservice-config-server" />
+        <module name="microservice-client" />
+        <module name="microservice-eureka" />
+        <module name="microservice-reserva" />
+        <module name="Microservice-Gateway" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="File-Imagen" options="-parameters" />
+      <module name="Microservice-Gateway" options="-parameters" />
+      <module name="Microservice-Security-App" options="-parameters" />
+      <module name="Microservice-Usuario" options="-parameters" />
+      <module name="Microservice-config-server" options="-parameters" />
+      <module name="microservice-CampoFutbol" options="-parameters" />
+      <module name="microservice-client" options="-parameters" />
+      <module name="microservice-eureka" options="-parameters" />
+      <module name="microservice-gateway" options="-parameters" />
+      <module name="microservice-reserva" options="-parameters" />
+    </option>
+  </component>
+</project>
