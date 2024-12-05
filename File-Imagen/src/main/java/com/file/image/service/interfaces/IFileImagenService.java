@@ -9,4 +9,5 @@ import java.util.List;
 public interface IFileImagenService {
 
     ImagenFileDto addImage(ImagenFileDto imagenFileDto, List<MultipartFile> file) throws IOException;
+    List<ImagenFileDto> lisAllFindIdCampo(int idCampoFutbol);
 }

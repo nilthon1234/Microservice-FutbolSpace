@@ -4,10 +4,7 @@ import com.file.image.presentation.dto.ImagenFileDto;
 import com.file.image.service.interfaces.IFileImagenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -35,6 +32,11 @@ public class FileImageController {
 
         }
 
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<List<ImagenFileDto>> getListFile(@PathVariable int id){
+        List<ImagenFileDto> list = fileImagenService.lisAllFindIdCampo(id);
+        return ResponseEntity.ok(list);
     }
 
 

@@ -5,6 +5,7 @@ import com.file.image.persistence.repository.IFileImagenRepository;
 import com.file.image.presentation.dto.ImagenFileDto;
 import com.file.image.service.interfaces.FileService;
 import com.file.image.service.interfaces.IFileImagenService;
+import com.file.image.utils.mapper.FileImagenMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,15 +13,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FileImagenServiceImpl implements IFileImagenService {
 
     private final IFileImagenRepository repository;
     private final FileService fileService;
+    private final FileImagenMapper fileImagenMapper;
 
     @Autowired
-    public FileImagenServiceImpl(IFileImagenRepository repository, FileService fileService) {
+    public FileImagenServiceImpl(FileImagenMapper fileImagenMapper, IFileImagenRepository repository, FileService fileService) {
+        this.fileImagenMapper = fileImagenMapper;
         this.repository = repository;
         this.fileService = fileService;
     }
@@ -64,5 +68,13 @@ public class FileImagenServiceImpl implements IFileImagenService {
                 .imagen03Url(imagenUrl3)
                 .build();
         return fileDto;
+    }
+
+    @Override
+    public List<ImagenFileDto> lisAllFindIdCampo(int idCampoFutbol) {
+        List<FileImagen> list = repository.findByAndIdCampoFutbol(idCampoFutbol);
+        return list.stream()
+                .map(this.fileImagenMapper::convertDto)
+                .collect(Collectors.toList());
     }
 }
