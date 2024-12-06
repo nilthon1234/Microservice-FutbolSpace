@@ -4,6 +4,8 @@ import com.file.image.presentation.dto.ImagenFileDto;
 import com.file.image.service.interfaces.IFileImagenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +37,12 @@ public class FileImageController {
 
         }
 
+    }
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<List<ImagenFileDto>> listAllIdCampo(@PathVariable int id){
+    	List<ImagenFileDto> response = fileImagenService.getFileImagenDto(id);
+    	
+    	return ResponseEntity.ok(response);
     }
 
 

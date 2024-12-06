@@ -3,10 +3,12 @@ package com.microservice.usuario.service.implementation;
 import com.microservice.usuario.persistence.models.Usuario;
 import com.microservice.usuario.persistence.repository.IUsuarioRepository;
 import com.microservice.usuario.presentation.dto.CampoFutbolDto;
+import com.microservice.usuario.presentation.dto.ImagenFileDto;
 import com.microservice.usuario.presentation.dto.UsuarioDto;
 import com.microservice.usuario.service.http.response.ResponseUsuario;
 import com.microservice.usuario.service.interfaces.IUsuarioService;
 import com.microservice.usuario.utils.interfaces.CampoFutbolClient;
+import com.microservice.usuario.utils.interfaces.FileImagenClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,8 @@ public class UsuarioServiceImpl implements IUsuarioService {
     private IUsuarioRepository usuarioRepository;
     @Autowired
     private CampoFutbolClient campoFutbolClient;
+    @Autowired
+    private FileImagenClient fileImagenClient;
 
     @Override
     public List<UsuarioDto> listByState( ) {
@@ -45,6 +49,10 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public ResponseUsuario findCampoFutbolByUsuario(long dniEntity) {
         Usuario usuario = usuarioRepository.findByDniEntity(dniEntity).orElse(new Usuario());
         List<CampoFutbolDto> campoFutbolDtos = campoFutbolClient.shearchDni(dniEntity);
+        campoFutbolDtos.forEach(campoFutbolDto -> {
+           List<ImagenFileDto> imagen = fileImagenClient.getListIdCampoFutbol(campoFutbolDto.getId());
+           campoFutbolDto.setFileImagen(imagen);
+        });
         return ResponseUsuario.builder()
                 .dni(usuario.getDniEntity())
                 .phone(usuario.getPhoneEntity())
