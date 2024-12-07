@@ -55,10 +55,11 @@ public class FileImagenServiceImpl implements IFileImagenService {
                     throw new IllegalArgumentException("Solo se permite 3 imagenes");
             }
         }
+        fileImagen = repository.save(fileImagen);
+        //concatenamos
         String imagenUrl1 = baseUrl + "/file/" + fileImagen.getImagen01();
         String imagenUrl2 = baseUrl + "/file/" + fileImagen.getImagen02();
         String imagenUrl3 = baseUrl + "/file/" + fileImagen.getImagen03();
-        fileImagen = repository.save(fileImagen);
         ImagenFileDto fileDto = ImagenFileDto.builder()
                 .id(fileImagen.getId())
                 .idCampoFutbol(fileImagen.getIdCampoFutbol())

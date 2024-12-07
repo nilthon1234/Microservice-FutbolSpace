@@ -33,7 +33,8 @@ public class FileImageController {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR el motivo es que ya hay imagenes con ese nombre en la carpeta: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("ERROR el motivo es que ya hay imagenes con ese nombre en la carpeta: " + e.getMessage());
 
         }
 
