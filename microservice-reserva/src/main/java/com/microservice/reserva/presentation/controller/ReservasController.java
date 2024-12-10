@@ -38,9 +38,16 @@ public class ReservasController {
          List<ResponseReserva> myList = reservaService.searchDniClient(dniCliente);
         return ResponseEntity.ok(myList);
     }
-    
+
+    @GetMapping("/client/{dni}")
+    public ResponseEntity<List<ReservaDto>> getListDniClient(@PathVariable int dni){
+        List<ReservaDto> response = reservaService.findByDniClient(dni);
+        return response.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(response);
+    }
+
     @GetMapping("/admin/list-reserva")
     public List<ReservaDto> allListReservas(){
     	return reservaService.allListReservas();
     }
+
 }

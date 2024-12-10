@@ -25,6 +25,11 @@ public class ClienteController {
     public ResponseEntity<?> listar(){
         return ResponseEntity.ok(iClienteService.listAllAcces());
     }
+
+    @GetMapping("/client/{dni}")
+    public ResponseEntity<?> searchDni(@PathVariable int dni){
+        return ResponseEntity.ok(iClienteService.searchByDni(dni));
+    }
     @PostMapping("/client/register")
     public void add(@RequestBody Cliente cliente){
         iClienteService.addClient(cliente);
@@ -40,5 +45,6 @@ public class ClienteController {
     public List<ClienteDto> listAllClient(){
     	return iClienteService.listAllCliente();
     }
+
 
 }

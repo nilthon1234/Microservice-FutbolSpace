@@ -27,7 +27,7 @@ public class CampoFutbolController {
     }
 
     @GetMapping("/client/{id}")
-    public List<CampoFutbolDto> listPorDni(@PathVariable long id){
+    public List<CampoFutbolDto> listaIdCampoFutbol(@PathVariable long id){
         return iCampoFutbolService.searchById(id);
     }
     //usuario

@@ -4,10 +4,13 @@ import com.microservice.client.persistence.models.Cliente;
 import com.microservice.client.persistence.repository.IClienteRepository;
 import com.microservice.client.presentation.dto.CampoFutbolDto;
 import com.microservice.client.presentation.dto.ClienteDto;
+import com.microservice.client.presentation.dto.ReservaDto;
 import com.microservice.client.presentation.dto.UsuarioDto;
+import com.microservice.client.service.http.response.ResponseClienReservaCampo;
 import com.microservice.client.service.http.response.ResponseCliente;
 import com.microservice.client.service.interfaces.IClienteservice;
 import com.microservice.client.utils.interfaces.CampoFutbolClient;
+import com.microservice.client.utils.interfaces.ReservasClient;
 import com.microservice.client.utils.interfaces.UsuarioClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,8 @@ import java.util.stream.Collectors;
 public class ClienteServiceImpl implements IClienteservice {
     @Autowired
     private IClienteRepository iClienteRepository;
-
+    @Autowired
+    private ReservasClient reservasClient;
     @Autowired
     private CampoFutbolClient campoFutbolClient;
     @Autowired
@@ -56,7 +60,24 @@ public class ClienteServiceImpl implements IClienteservice {
         return response;
     }
 
-	@Override
+    @Override
+    public ResponseClienReservaCampo searchByDni(int dni) {
+        Cliente client = iClienteRepository.findByDni(dni).orElse(new Cliente());
+        List<ReservaDto> reservaResponse = reservasClient.listReservas(dni);
+        reservaResponse.forEach(response -> {
+            List<CampoFutbolDto> campoResponse = campoFutbolClient.listaIdCampoFutbol(response.getCampoFutbol());
+            response.setCampoFutbols(campoResponse);
+        });
+        return ResponseClienReservaCampo.builder()
+                .id(client.getId())
+                .name(client.getName())
+                .lastname(client.getLastname())
+                .dni(client.getDni())
+                .reservas(reservaResponse)
+                .build();
+    }
+
+    @Override
 	public List<ClienteDto> listAllCliente() {
 		// TODO Auto-generated method stub
 		return iClienteRepository.findAll().stream()

@@ -89,5 +89,19 @@ public class ReservasServiceImpl implements IReservaService {
 				.collect(Collectors.toList());
 	}
 
+    @Override
+    public List<ReservaDto> findByDniClient(int dniClient) {
+        return  reservaRepository.findByDniCliente(dniClient).stream()
+                .map(r -> new ReservaDto(
+                        r.getId(),
+                        r.getFecha(),
+                        r.getHoraInicio().toLocalTime(),
+                        r.getHoraFin().toLocalTime(),
+                        r.getDniCliente(),
+                        r.getIdCampoFutbol()
+                ))
+                .collect(Collectors.toList());
+    }
+
 
 }
