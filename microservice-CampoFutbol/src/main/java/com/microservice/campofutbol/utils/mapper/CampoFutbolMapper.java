@@ -12,6 +12,7 @@ public class CampoFutbolMapper {
 
     public CampoFutbolDto myLisCampoFutbolDto (CampoFutbol campoFutbol){
         CampoFutbolDto mydto = new CampoFutbolDto();
+        mydto.setId(campoFutbol.getId());
         mydto.setAddress(campoFutbol.getAddressEntity());
         mydto.setDniUse(campoFutbol.getDniEntity());
         mydto.setDescription(campoFutbol.getDescriptionEntity());

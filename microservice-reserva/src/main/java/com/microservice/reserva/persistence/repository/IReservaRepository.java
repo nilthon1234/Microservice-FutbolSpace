@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +23,11 @@ public interface IReservaRepository extends JpaRepository<Reservas, Long> {
 
    List<Reservas> findByDniCliente(int dniCliente );
 
+
+   @Query("SELECT r FROM Reservas r WHERE r.idCampoFutbol = :idCampoFutbol " +
+           "AND r.fecha BETWEEN :startDate AND :endDate")
+   List<Reservas> findReservasByCampoAndDateRange(
+           @Param("idCampoFutbol") int idCampoFutbol,
+           @Param("startDate")LocalDate startDate,
+           @Param("endDate")LocalDate endDate);
 }

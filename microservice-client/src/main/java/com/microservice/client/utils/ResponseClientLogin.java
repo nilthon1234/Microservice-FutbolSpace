@@ -10,7 +10,7 @@ public class ResponseClientLogin {
     public static ResponseEntity<?> responseloginAcc (Map<String, String> response){
         if (response.containsKey("error")){
             return new  ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
-        } else if (response.containsKey("access")) {
+        } else if (response.containsKey("success")) {
             return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 
         }

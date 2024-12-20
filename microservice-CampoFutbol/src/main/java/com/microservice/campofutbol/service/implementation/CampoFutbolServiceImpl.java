@@ -3,7 +3,12 @@ package com.microservice.campofutbol.service.implementation;
 import com.microservice.campofutbol.persistence.models.CampoFutbol;
 import com.microservice.campofutbol.persistence.repository.ICampoFutbolRepository;
 import com.microservice.campofutbol.presentation.dto.CampoFutbolDto;
+import com.microservice.campofutbol.presentation.dto.ImagenFileDto;
+import com.microservice.campofutbol.presentation.dto.ReservaDto;
+import com.microservice.campofutbol.service.http.response.ResponseCampoFutbol;
 import com.microservice.campofutbol.service.interfaces.ICampoFutbolService;
+import com.microservice.campofutbol.utils.interfaces.IFileImagenClient;
+import com.microservice.campofutbol.utils.interfaces.IReservasClient;
 import com.microservice.campofutbol.utils.mapper.CampoFutbolMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +23,10 @@ import java.util.stream.Collectors;
 public class CampoFutbolServiceImpl implements ICampoFutbolService {
     @Autowired
     private ICampoFutbolRepository iCampoFutbolRepository;
+    @Autowired
+    private IReservasClient reservasClient;
+    @Autowired
+    private IFileImagenClient fileImagenClient;
     @Autowired
     private CampoFutbolMapper campoFutbolMapper;
     @Override
@@ -77,6 +86,25 @@ public class CampoFutbolServiceImpl implements ICampoFutbolService {
                     .collect(Collectors.toList());
         }
         throw  new EntityNotFoundException(" fallo el id: " + id + " no encontrado" );
+    }
+
+    @Override
+    public ResponseCampoFutbol listCampoandReserva(long id) {
+
+        CampoFutbol campoFutbol = iCampoFutbolRepository.findById(id).orElse(new CampoFutbol());
+        List<ImagenFileDto> imagen = fileImagenClient.getListIdCampoFutbol(id);
+        List<ReservaDto> response = reservasClient.listaReservasIdCampo(id);
+        return ResponseCampoFutbol.builder()
+                .id(campoFutbol.getId())
+                .address(campoFutbol.getAddressEntity())
+                .description(campoFutbol.getDescriptionEntity())
+                .city(campoFutbol.getCityEntity())
+                .province(campoFutbol.getProvinceEntity())
+                .district(campoFutbol.getDistrictEntity())
+                .reservas(response)
+                .fileImagen(imagen)
+                .build();
+
     }
 
 

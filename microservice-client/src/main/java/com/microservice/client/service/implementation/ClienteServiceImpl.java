@@ -56,7 +56,7 @@ public class ClienteServiceImpl implements IClienteservice {
             return response;
         }
         Cliente cli = validar.get();
-        response.put("access", "Axidistes Exitosamente: " + cli.getName());
+        response.put("success", "Axidistes Exitosamente: " + cli.getName());
         return response;
     }
 

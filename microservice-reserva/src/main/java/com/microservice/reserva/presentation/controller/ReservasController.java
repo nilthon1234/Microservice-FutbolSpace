@@ -19,7 +19,7 @@ public class ReservasController {
 
     @PostMapping("/client/register")
     public ResponseEntity<?> register(@RequestBody ReservaDto request) {
-        try {
+
             Reservas reserva = reservaService.registrarReserva(
                     request.getCampoFutbol(),
                     request.getDniCliente(),
@@ -29,14 +29,19 @@ public class ReservasController {
             );
             System.out.println(reserva);
             return ResponseEntity.ok(reserva);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+
     }
-    @GetMapping("/client/search")
-    public ResponseEntity<List<ResponseReserva>> listReservaDniClien(@RequestParam int dniCliente) {
-         List<ResponseReserva> myList = reservaService.searchDniClient(dniCliente);
-        return ResponseEntity.ok(myList);
+    @GetMapping("/client/search/{dniCliente}")
+    public ResponseEntity<List<ReservaDto>> listReservaDniClien(@PathVariable int dniCliente) {
+        List<ReservaDto> reservas = reservaService.searchDniClient(dniCliente);
+        return ResponseEntity.ok(reservas);
+    }
+
+
+    @GetMapping("/client/campo/{idCampo}")
+    public ResponseEntity<List<ReservaDto>> getListIdCampoFutbol(@PathVariable int idCampo){
+        List<ReservaDto> response = reservaService.finfByIdCampoFutbol(idCampo);
+        return response.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(response);
     }
 
     @GetMapping("/client/{dni}")

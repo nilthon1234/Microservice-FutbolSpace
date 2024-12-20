@@ -10,6 +10,6 @@ import java.util.List;
 @FeignClient(name = "microservice-reserva", url = "localhost:8082/reserva")
 public interface ReservasClient {
 
-    @GetMapping("/client/{dni}")
-    List<ReservaDto>listReservas(@PathVariable int dni);
+    @GetMapping("/client/search/{dniCliente}")
+    List<ReservaDto>listReservas(@PathVariable int dniCliente);
 }

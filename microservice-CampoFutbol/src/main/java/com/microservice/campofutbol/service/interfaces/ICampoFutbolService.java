@@ -2,6 +2,7 @@ package com.microservice.campofutbol.service.interfaces;
 
 import com.microservice.campofutbol.persistence.models.CampoFutbol;
 import com.microservice.campofutbol.presentation.dto.CampoFutbolDto;
+import com.microservice.campofutbol.service.http.response.ResponseCampoFutbol;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface ICampoFutbolService {
     CampoFutbol actusCampoadmin(Long idCampo, CampoFutbolDto mydto);
     List<CampoFutbolDto> allListCampo();
     List<CampoFutbolDto>searchById(Long id);
+
+    ResponseCampoFutbol listCampoandReserva(long id);
 }

@@ -12,4 +12,5 @@ public interface ICampoFutbolFeignClient {
 
      @GetMapping("/client/{id}")
     List<CampoFutbolDto> listIdCampoFutbol(@PathVariable long id);
+
 }

@@ -13,8 +13,13 @@ import java.util.List;
 public interface IReservaService {
 
     Reservas registrarReserva(int campoFutbol, int cliente, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin);
-    List<ResponseReserva> searchDniClient(int dniCliente);
+    List<ReservaDto> searchDniClient(int dniCliente);
     List<ReservaDto> allListReservas();
     List<ReservaDto> findByDniClient (int dniClient);
+
+    List<ReservaDto> finfByIdCampoFutbol(int idCampoFutbol);
+
+    //listar allListByDniReserva
+
 
 }

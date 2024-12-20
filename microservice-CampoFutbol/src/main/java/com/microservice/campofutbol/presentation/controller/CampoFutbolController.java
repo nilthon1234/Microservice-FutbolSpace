@@ -30,6 +30,11 @@ public class CampoFutbolController {
     public List<CampoFutbolDto> listaIdCampoFutbol(@PathVariable long id){
         return iCampoFutbolService.searchById(id);
     }
+    @GetMapping("/client/detalls/{id}")
+    public ResponseEntity<?> listaCampoandReserva(@PathVariable long id){
+        return ResponseEntity.ok(iCampoFutbolService.listCampoandReserva(id));
+    }
+
     //usuario
     @PostMapping("/usu/add")
     public ResponseEntity<?> addCampoFutbol(@RequestBody CampoFutbolDto myDto){

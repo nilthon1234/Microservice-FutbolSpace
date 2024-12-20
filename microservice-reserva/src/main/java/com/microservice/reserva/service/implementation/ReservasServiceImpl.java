@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,8 +41,14 @@ public class ReservasServiceImpl implements IReservaService {
         LocalDateTime inicio = LocalDateTime.of( fecha, horaInicio);
         LocalDateTime fin = LocalDateTime.of(fecha, horaFin);
 
+        if (horaFin.isBefore(horaInicio)){
+            throw new IllegalArgumentException("La HoraFin: " + horaFin + " no puede ser menor que la HoraInicio: " + horaInicio);
+        }
+        if (horaInicio.equals(horaFin)){
+            throw new IllegalArgumentException("La Hora Inicio: " + horaInicio + " no puede ser la misma hora Fin: " + horaFin);
+        }
         if (!verificarDisponibilidad(campoFutbol,inicio,fin)) {
-            throw new IllegalArgumentException("El rango de hora que ingresas ya estan reservadas por otro Cliente");
+            throw new IllegalArgumentException("El rango de fecha y hora que ingresas ya estan reservadas");
 
         }
         Reservas reserva = new Reservas();
@@ -54,33 +61,22 @@ public class ReservasServiceImpl implements IReservaService {
     }
 
     @Override
-    public List<ResponseReserva> searchDniClient(int dniCliente) {
-        List<Reservas> lista = reservaRepository.findByDniCliente(dniCliente);
-        if (lista.isEmpty()) {
-            throw  new IllegalArgumentException("no se encontro dniCliente: " + dniCliente);
-        }
-        List<ResponseReserva> responseReservas = new ArrayList<>();
-        for (Reservas reservas : lista) {
+    public List<ReservaDto> searchDniClient(int dniCliente) {
+        List<Reservas> reservas = reservaRepository.findByDniCliente(dniCliente);
+        return reservas.stream()
+                .map(reservas1 -> {
+                    return ReservaDto.builder()
+                            .id(reservas1.getId())
+                            .fecha(reservas1.getFecha())
+                            .horaInicio(reservas1.getHoraInicio().toLocalTime())
+                            .horaFin(reservas1.getHoraFin().toLocalTime())
+                            .dniCliente(reservas1.getDniCliente())
+                            .campoFutbol(reservas1.getIdCampoFutbol())
+                            .build();
 
-            List<CampoFutbolDto> campoFutbolDto = campoFutbolFeignClient.listIdCampoFutbol(reservas.getIdCampoFutbol());
-            if (campoFutbolDto.isEmpty()) {
-                throw  new IllegalArgumentException("no se encontro idCampoFutbol: " + reservas.getIdCampoFutbol());
-            }
-
-            ResponseReserva response = ResponseReserva.builder()
-                    .campoFutbol(reservas.getIdCampoFutbol())
-                    .dniCliente(reservas.getDniCliente())
-                    .fecha(reservas.getFecha())
-                    .horaInicio(reservas.getHoraInicio().toLocalTime())
-                    .horaFin(reservas.getHoraFin().toLocalTime())
-                    .listaCampoFutbol(campoFutbolDto)
-                    .build();
-            responseReservas.add(response);
-        }
-    return responseReservas;
-
+                })
+                .collect(Collectors.toList());
     }
-
 	@Override
 	public List<ReservaDto> allListReservas() {
 		// TODO Auto-generated method stub
@@ -89,9 +85,24 @@ public class ReservasServiceImpl implements IReservaService {
 				.collect(Collectors.toList());
 	}
 
+    //metodo sera consumida por microservice -client
     @Override
     public List<ReservaDto> findByDniClient(int dniClient) {
-        return  reservaRepository.findByDniCliente(dniClient).stream()
+        return reservaRepository.findByDniCliente(dniClient).stream()
+                .sorted(Comparator.comparing(Reservas::getFecha)
+                        .thenComparing(Reservas::getHoraInicio)) // Ordenamos por fecha y hora
+                .skip(Math.max(0, reservaRepository.findByDniCliente(dniClient).size() - 3)) // Saltamos hasta las últimas 3 reservas
+                .map(ReservaDto::new) //Mapeamos
+                .collect(Collectors.toList());
+    }
+
+
+    //metodo por los 3 dias de hoy hasta mañana pasado
+    @Override
+    public List<ReservaDto> finfByIdCampoFutbol(int idCampoFutbol) {
+        LocalDate today = LocalDate.now();
+        LocalDate dayAfterTomorrow = today.plusDays(2);
+        return reservaRepository.findReservasByCampoAndDateRange(idCampoFutbol,today,dayAfterTomorrow).stream()
                 .map(r -> new ReservaDto(
                         r.getId(),
                         r.getFecha(),
@@ -102,6 +113,8 @@ public class ReservasServiceImpl implements IReservaService {
                 ))
                 .collect(Collectors.toList());
     }
+
+
 
 
 }
