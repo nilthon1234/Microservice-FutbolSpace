@@ -8,8 +8,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -18,6 +20,10 @@ public class FileServiceImpl implements FileService {
     public String uploadFile(String path, MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String uniqueFilename = System.currentTimeMillis() + "_" + originalFilename; // Generar nombre único
+        if (fileExists(path,originalFilename)){
+            throw  new FileAlreadyExistsException("ya existe imagenes con ese nombre: " + originalFilename);
+        }
+
         String filePath = path + File.separator + uniqueFilename;
         File directory = new File(path);
         if (!directory.exists()) {
@@ -31,6 +37,19 @@ public class FileServiceImpl implements FileService {
     public InputStream getResourceFile(String path, String filename) throws IOException {
         String filePath = path + File.separator + filename;
         return new FileInputStream(filePath);
+    }
+
+    @Override
+    public boolean fileExists(String path, String filename) {
+        File directory =new File(path);
+        if (directory.exists()&& directory.isDirectory()){
+            File[] files = directory.listFiles();
+            if (files != null) {
+                return Arrays.stream(files)
+                        .anyMatch(file -> file.getName().contains(filename));
+            }
+        }
+        return false;
     }
 }
 

@@ -9,10 +9,13 @@ import com.file.image.utils.mapper.FileImagenMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -39,22 +42,24 @@ public class FileImagenServiceImpl implements IFileImagenService {
     public ImagenFileDto addImage(ImagenFileDto imagenFileDto, List<MultipartFile> file) throws IOException {
         FileImagen fileImagen = new FileImagen();
         fileImagen.setIdCampoFutbol(imagenFileDto.getIdCampoFutbol());
-        for (int i = 0; i < file.size(); i++) {
-            String fileName = fileService.uploadFile(path, file.get(i));
-            switch (i) {
-                case 0:
-                    fileImagen.setImagen01(fileName);
-                    break;
-                case 1:
-                    fileImagen.setImagen02(fileName);
-                    break;
-                case 2:
-                    fileImagen.setImagen03(fileName);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Solo se permite 3 imagenes");
+
+            for (int i = 0; i < file.size(); i++) {
+                String fileName = fileService.uploadFile(path, file.get(i));
+                switch (i) {
+                    case 0:
+                        fileImagen.setImagen01(fileName);
+                        break;
+                    case 1:
+                        fileImagen.setImagen02(fileName);
+                        break;
+                    case 2:
+                        fileImagen.setImagen03(fileName);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Solo se permite 3 imagenes");
+                }
             }
-        }
+
         fileImagen = repository.save(fileImagen);
         //concatenamos
         String imagenUrl1 = baseUrl + "/file/" + fileImagen.getImagen01();
