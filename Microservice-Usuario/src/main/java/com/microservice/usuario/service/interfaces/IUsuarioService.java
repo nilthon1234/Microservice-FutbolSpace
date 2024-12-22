@@ -10,9 +10,9 @@ import java.util.Map;
 
 public interface IUsuarioService {
     List<UsuarioDto> listByState();
-    ResponseUsuario findCampoFutbolByUsuario(long dniEntity);
+    ResponseUsuario findCampoFutbolByUsuario(String dniEntity);
     Usuario register(UsuarioDto usuarioDto);
-    Map<String, String> login(long dniEntity, String passwordEntity);
+    Map<String, String> login(String dniEntity, String passwordEntity);
     
     //Admin
     List<UsuarioDto> AllListUsua();

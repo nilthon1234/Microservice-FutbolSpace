@@ -21,8 +21,8 @@ public class UsuarioDto {
     private String lastname;
     private String email;
     private String password;
-    private long dni;
-    private int phone;
+    private String dni;
+    private String phone;
     private String estado;
     
     public UsuarioDto(Usuario usuario) { 

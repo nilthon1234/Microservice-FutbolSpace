@@ -10,5 +10,5 @@ import java.util.List;
 @FeignClient(name = "microservice-CampoFutbol", url = "localhost:8085/campo")
 public interface CampoFutbolClient {
     @GetMapping("/usu/dni/{dniEntity}")
-    List<CampoFutbolDto> shearchDni(@PathVariable long dniEntity);
+    List<CampoFutbolDto> shearchDni(@PathVariable String dniEntity);
 }

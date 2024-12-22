@@ -10,7 +10,10 @@ import java.util.Optional;
 @Repository
 public interface IUsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> findByEstadoEntity(Usuario.Estado estado);
-    Optional<Usuario> findByDniEntity(long dniEntity);
-    Optional<Usuario> findByDniEntityAndPasswordEntity(long dniEntity, String passwordEntity);
+    Optional<Usuario> findByDniEntity(String dniEntity);
+    Optional<Usuario> findByDniEntityAndPasswordEntity(String dniEntity, String passwordEntity);
 
+    boolean existsByDniEntity(String dniEntity);
+    boolean existsByEmailEntity(String emailEntity);
+    boolean existsByPhoneEntity(String phoneEntity);
 }

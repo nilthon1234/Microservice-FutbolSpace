@@ -14,8 +14,8 @@ import java.util.List;
 @Builder
 @Data
 public class ResponseUsuario {
-    private long dni;
+    private String dni;
     private String name;
-    private int phone;
+    private String phone;
     private List<CampoFutbolDto> CampoFutbol;
 }

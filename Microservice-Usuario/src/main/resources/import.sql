@@ -1,2 +1,2 @@
-INSERT INTO tb_user (name, lastname, email, password, dni_use, phone, estado ) VALUES ('jhon','Hinostrza','jhon1234@gmail.com', '12345678', 12345678, 923550891, 'Acces');
-INSERT INTO tb_user (name, lastname, email, password, dni_use, phone, estado ) VALUES ('andy','Ramoz','andy234@gmail.com', '12345678', 76951423, 999988832, 'NotAcces')
+INSERT INTO tb_user (name, lastname, email, password, dni_use, phone, estado ) VALUES ('jhon','Hinostrza','jhon1234@gmail.com', '12345678', '12345678', '923550891', 'Acces');
+INSERT INTO tb_user (name, lastname, email, password, dni_use, phone, estado ) VALUES ('andy','Ramoz','andy234@gmail.com', '12345678', '76951423', '999988832', 'NotAcces')

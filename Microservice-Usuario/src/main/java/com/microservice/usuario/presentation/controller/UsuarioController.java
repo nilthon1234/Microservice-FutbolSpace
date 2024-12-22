@@ -26,7 +26,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/usu/{dniEntity}")
-    public ResponseEntity<?> searchDniUsuario(@PathVariable long dniEntity){
+    public ResponseEntity<?> searchDniUsuario(@PathVariable String dniEntity){
         return ResponseEntity.ok(usuarioService.findCampoFutbolByUsuario(dniEntity));
     }
     @PostMapping("/usu/register")

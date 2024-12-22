@@ -10,6 +10,7 @@ import com.microservice.usuario.service.interfaces.IUsuarioService;
 import com.microservice.usuario.utils.interfaces.CampoFutbolClient;
 import com.microservice.usuario.utils.interfaces.FileImagenClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -27,6 +28,17 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Autowired
     private FileImagenClient fileImagenClient;
 
+    private void validarDuplicados(UsuarioDto usuarioDto){
+        if (usuarioRepository.existsByDniEntity(usuarioDto.getDni())){
+            throw new DuplicateKeyException("el dni ya esta registrada");
+        }
+        if (usuarioRepository.existsByEmailEntity(usuarioDto.getEmail())){
+            throw new DuplicateKeyException("El email ya esta registrada");
+        }
+        if (usuarioRepository.existsByPhoneEntity(usuarioDto.getPhone())){
+            throw new DuplicateKeyException("El phone ya esta registrada");
+        }
+    }
     @Override
     public List<UsuarioDto> listByState( ) {
         List<Usuario> list = usuarioRepository.findByEstadoEntity(Usuario.Estado.Acces);
@@ -46,7 +58,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
-    public ResponseUsuario findCampoFutbolByUsuario(long dniEntity) {
+    public ResponseUsuario findCampoFutbolByUsuario(String dniEntity) {
         Usuario usuario = usuarioRepository.findByDniEntity(dniEntity).orElse(new Usuario());
         List<CampoFutbolDto> campoFutbolDtos = campoFutbolClient.shearchDni(dniEntity);
         campoFutbolDtos.forEach(campoFutbolDto -> {
@@ -63,18 +75,22 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     public Usuario register(UsuarioDto usuarioDto) {
-        Usuario usu = new Usuario();
-        usu.setNameEntity(usuarioDto.getName());
-        usu.setLastnameEntity(usuarioDto.getLastname());
-        usu.setEmailEntity(usuarioDto.getEmail());
-        usu.setPasswordEntity(usuarioDto.getPassword());
-        usu.setDniEntity(usuarioDto.getDni());
-        usu.setPhoneEntity(usuarioDto.getPhone());
+        validarDuplicados(usuarioDto);
+
+        Usuario usu = Usuario.builder()
+                .nameEntity(usuarioDto.getName())
+                .lastnameEntity(usuarioDto.getLastname())
+                .emailEntity(usuarioDto.getEmail())
+                .passwordEntity(usuarioDto.getPassword())
+                .dniEntity(usuarioDto.getDni())
+                .phoneEntity(usuarioDto.getPhone())
+                .build();
+
         return usuarioRepository.save(usu);
     }
 
     @Override
-    public Map<String, String> login(long dniEntity, String passwordEntity) {
+    public Map<String, String> login(String dniEntity, String passwordEntity) {
         Optional<Usuario> validar = usuarioRepository.findByDniEntityAndPasswordEntity(dniEntity, passwordEntity);
         Map<String, String> response = new HashMap<>();
 
