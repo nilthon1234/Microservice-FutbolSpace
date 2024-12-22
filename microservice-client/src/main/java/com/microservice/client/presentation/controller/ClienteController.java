@@ -6,6 +6,7 @@ import com.microservice.client.service.http.response.ResponseCliente;
 import com.microservice.client.service.implementation.ClienteServiceImpl;
 import com.microservice.client.service.interfaces.IClienteservice;
 import com.microservice.client.utils.ResponseClientLogin;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +32,7 @@ public class ClienteController {
         return ResponseEntity.ok(iClienteService.searchByDni(dni));
     }
     @PostMapping("/client/register")
-    public void add(@RequestBody Cliente cliente){
+    public void add(@Valid @RequestBody Cliente cliente){
         iClienteService.addClient(cliente);
     }
 

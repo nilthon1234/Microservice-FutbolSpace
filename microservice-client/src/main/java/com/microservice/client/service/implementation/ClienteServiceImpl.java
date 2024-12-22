@@ -62,7 +62,7 @@ public class ClienteServiceImpl implements IClienteservice {
 
     @Override
     public ResponseClienReservaCampo searchByDni(int dni) {
-        Cliente client = iClienteRepository.findByDni(dni).orElse(new Cliente());
+        Cliente client = iClienteRepository.findByDni(dni).orElse(null);
         List<ReservaDto> reservaResponse = reservasClient.listReservas(dni);
         reservaResponse.forEach(response -> {
             List<CampoFutbolDto> campoResponse = campoFutbolClient.listaIdCampoFutbol(response.getCampoFutbol());
