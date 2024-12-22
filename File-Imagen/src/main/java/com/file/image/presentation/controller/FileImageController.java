@@ -2,6 +2,7 @@ package com.file.image.presentation.controller;
 
 import com.file.image.presentation.dto.ImagenFileDto;
 import com.file.image.service.interfaces.IFileImagenService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ public class FileImageController {
         this.fileImagenService = fileImagenService;
     }
     @PostMapping("/add")
-    public ResponseEntity<?> uploadFile(@RequestParam("idCampoFutbol") int idCampoFutbol,
+    public ResponseEntity<?> uploadFile(@Valid @RequestParam("idCampoFutbol") int idCampoFutbol,
                                         @RequestParam("imagenes") List<MultipartFile> imagenes) {
         try {
             ImagenFileDto imagenFileDto = new ImagenFileDto();

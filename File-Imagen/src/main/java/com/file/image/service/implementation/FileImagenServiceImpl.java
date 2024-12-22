@@ -40,6 +40,13 @@ public class FileImagenServiceImpl implements IFileImagenService {
 
     @Override
     public ImagenFileDto addImage(ImagenFileDto imagenFileDto, List<MultipartFile> file) throws IOException {
+        for (int i = 0; i < file.size(); i++){
+            MultipartFile imagen = file.get(i);
+            if (imagen.isEmpty()) {
+                throw new IllegalArgumentException("La Imagen " + (i + 1) + " esta vacia");
+            }
+        }
+
         FileImagen fileImagen = new FileImagen();
         fileImagen.setIdCampoFutbol(imagenFileDto.getIdCampoFutbol());
 
