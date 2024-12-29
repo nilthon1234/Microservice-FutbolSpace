@@ -1,5 +1,7 @@
 package com.microservice.gateway.configuration.security;
 
+import com.microservice.gateway.service.exception.MissingAuthorizationHeaderException;
+import com.microservice.gateway.service.exception.UnauthorizedAccessException;
 import com.microservice.gateway.utils.JwtGatewayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -23,7 +25,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             if (routerValidator.isSecured.test(exchange.getRequest())) {
                 //header contains token or not
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                    throw new RuntimeException("missing authorization header");
+                    throw new MissingAuthorizationHeaderException();
                 }
 
                 String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
@@ -35,7 +37,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
                 } catch (Exception e) {
                     System.out.println("invalid access...!");
-                    throw new RuntimeException("un authorized access to application");
+                    throw new UnauthorizedAccessException();
                 }
             }
             return chain.filter(exchange);

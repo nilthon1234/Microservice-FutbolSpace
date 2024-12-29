@@ -30,13 +30,13 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     private void validarDuplicados(UsuarioDto usuarioDto){
         if (usuarioRepository.existsByDniEntity(usuarioDto.getDni())){
-            throw new DuplicateKeyException("el dni ya esta registrada");
+            throw new DuplicateKeyException("el dni: " + usuarioDto.getDni() + " ya esta registrada");
         }
         if (usuarioRepository.existsByEmailEntity(usuarioDto.getEmail())){
-            throw new DuplicateKeyException("El email ya esta registrada");
+            throw new DuplicateKeyException("El email: " + usuarioDto.getEmail() + " ya esta registrada");
         }
         if (usuarioRepository.existsByPhoneEntity(usuarioDto.getPhone())){
-            throw new DuplicateKeyException("El phone ya esta registrada");
+            throw new DuplicateKeyException("El phone: " + usuarioDto.getPhone() + " ya esta registrada");
         }
     }
     @Override

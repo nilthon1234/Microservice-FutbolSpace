@@ -7,6 +7,7 @@ import com.microservice.securityApp.service.http.AuthRequest;
 import com.microservice.securityApp.service.interfaces.IAdministratorService;
 import com.microservice.securityApp.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,8 +22,19 @@ public class AdministratorServiceImple implements IAdministratorService {
 
     @Autowired
     private JwtUtils jwtUtils;
+
+    private void validarDuplicados (Administrator administrator){
+        if (administratorRepository.existsByEmail(administrator.getEmail())){
+            throw new DuplicateKeyException("el email: " + administrator.getEmail() +  " ya esta registrado");
+        }
+        if (administratorRepository.existsByPhone(administrator.getPhone())){
+            throw new DuplicateKeyException("el phone: " + administrator.getPhone() + " ya esta registrado");
+        }
+    }
+
     @Override
     public String saveAdmin(Administrator administrator) {
+        validarDuplicados(administrator);
         administrator.setPassword(passwordEncoder.encode(administrator.getPassword()));
          Administrator sistemaString = administratorRepository.save(administrator);
          System.out.println("Administrator saved: " +  sistemaString);

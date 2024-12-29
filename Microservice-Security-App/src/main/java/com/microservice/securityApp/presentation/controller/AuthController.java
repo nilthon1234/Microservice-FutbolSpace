@@ -25,7 +25,9 @@ public class AuthController {
     }
     @PostMapping("/token")
     public ResponseEntity<AdministratorDto> getToken(@RequestBody AuthRequest authRequest){
-     Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(),authRequest.getPassword()));
+     Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
+             (authRequest.getEmail(),
+             authRequest.getPassword()));
         if (authentication.isAuthenticated()){
            AdministratorDto tokenDto = service.generateToken(authRequest.getEmail());
            return ResponseEntity.ok(tokenDto);

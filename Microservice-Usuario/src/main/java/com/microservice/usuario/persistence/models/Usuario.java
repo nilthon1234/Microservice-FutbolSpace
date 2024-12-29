@@ -31,6 +31,7 @@ public class Usuario {
     @Email
     @Column(name = "email", unique = true)
     private String emailEntity;
+
     @NotBlank(message = "este password no puede estar vacio")
     @Column(name = "password")
     private String passwordEntity;
